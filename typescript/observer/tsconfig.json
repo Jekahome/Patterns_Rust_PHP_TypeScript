@@ -1,0 +1,16 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es2019",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "removeComments": true,
+    "outDir": "js",
+    "rootDir": "ts"
+
+  },
+  "include": [
+    "ts/*",
+    "ts/**/*"
+  ]
+}
