@@ -5,28 +5,28 @@
 //При использовании паттерна возможен как точечный запрос, так и
 // рассылка (активная доставка) данных от субъекта (точечный запрос считается более «правильным»)
 
-export interface Subject {
-    registerObserver(obs:Observer): void;
-    removeObserver(obs:Observer): void;
+export interface SubjectImpl {
+    registerObserver(obs:ObserverImpl): void;
+    removeObserver(obs:ObserverImpl): void;
     notifyObservers(): void;
 }
-export interface GetData {
+export interface GetDataImpl {
     getTemperature():number;
     getHumidity():number;
     getPressure():number;
 }
 
-export interface Observer {
-    update(weatherData:GetData): void;
+export interface ObserverImpl {
+    update(weatherData:GetDataImpl): void;
 }
 
-export interface DisplayElement {
+export interface DisplayElementImpl {
     display(): void;
 }
 
 //Субьект
-class WeatherData implements Subject,GetData{
-    public observers: Array<Observer>;
+class WeatherData implements SubjectImpl,GetDataImpl{
+    public observers: Array<ObserverImpl>;
     public temperature:number;
     public humidity:number;//влажность
     public pressure:number;//давление
@@ -52,14 +52,14 @@ class WeatherData implements Subject,GetData{
     }
 
     // Регистрация наблюдателя
-    public registerObserver(obs:Observer): void{
+    public registerObserver(obs:ObserverImpl): void{
         let index = this.observers.indexOf(obs);
         if(index < 0) {
             this.observers.push(obs);
         }
     }
     // Отмена регистрации наблюдателя
-    public removeObserver(obs:Observer): void{
+    public removeObserver(obs:ObserverImpl): void{
        let index = this.observers.indexOf(obs);
        if(index >=0){
            delete this.observers[index];
@@ -79,7 +79,8 @@ class WeatherData implements Subject,GetData{
 
     // Оповещение наблюдателей о появлении новых данных
     private measurementsChanged(): void{
-        this.setChanged();
+
+        this.setChanged(); // Если новые данные не значительные можно не оповещать
         this.notifyObservers();
     }
 
@@ -106,18 +107,18 @@ class WeatherData implements Subject,GetData{
 
 // Наблюдатели
 // Вывод информации
-class CurrentConditionsDisplay implements Observer, DisplayElement{
+class CurrentConditionsDisplay implements ObserverImpl, DisplayElementImpl{
     private temperature:number;
     private humidity:number;//влажность
-    private weatherData:Subject;// для отмены рассылки
+    private weatherData:SubjectImpl;// для отмены рассылки
 
-    constructor(weatherData:Subject){
+    constructor(weatherData:SubjectImpl){
         this.weatherData = weatherData;
         this.temperature=0;
         this.humidity=0;
     }
 
-    public update(weatherData:GetData ):void{
+    public update(weatherData:GetDataImpl ):void{
         // параметр с типом GetData для получения произвольных данных
         this.temperature = weatherData.getTemperature();
         this.humidity = weatherData.getHumidity();
@@ -125,7 +126,8 @@ class CurrentConditionsDisplay implements Observer, DisplayElement{
     }
 
     public display(): void {
-        console.log("Current conditions: ",this.temperature,"F degrees and ", this.humidity,"% humidity");
+        console.log("Текущие условия: ");
+        console.log(this.temperature,"F degrees and ", this.humidity,"% humidity");
     }
 
     public removeObserver():void{
@@ -134,14 +136,14 @@ class CurrentConditionsDisplay implements Observer, DisplayElement{
 }
 
 
-class StatisticsDisplay  implements Observer, DisplayElement{
+class StatisticsDisplay  implements ObserverImpl, DisplayElementImpl{
     private maxTemperature:number;
     private minTemperature:number;
     private sumTemperature:number;
     private numReadings:number;
-    private weatherData:Subject;
+    private weatherData:SubjectImpl;
 
-    constructor(weatherData:Subject){
+    constructor(weatherData:SubjectImpl){
         this.weatherData = weatherData;
         this.maxTemperature = 0.0;
         this.minTemperature = 200.0;
@@ -149,7 +151,7 @@ class StatisticsDisplay  implements Observer, DisplayElement{
         this.numReadings = 0;
     }
 
-    public update(weatherData:GetData):void{
+    public update(weatherData:GetDataImpl):void{
         let tempTemperature:number = weatherData.getTemperature();
         this.sumTemperature += tempTemperature;
         this.numReadings++;
@@ -165,23 +167,28 @@ class StatisticsDisplay  implements Observer, DisplayElement{
     }
 
     public display(): void {
+        console.log("Статистика: ");
         console.log("Avg/Max/Min temperature = " , (this.sumTemperature / this.numReadings)
             , "/" , this.maxTemperature , "/" , this.minTemperature);
     }
+
+    public removeObserver():void{
+        this.weatherData.removeObserver(this);
+    }
 }
 
-class ForecastDisplay  implements Observer, DisplayElement{
+class ForecastDisplay  implements ObserverImpl, DisplayElementImpl{
     private currentPressure:number;
     private lastPressure:number;
-    private weatherData:Subject;
+    private weatherData:SubjectImpl;
 
-    constructor(weatherData:Subject){
+    constructor(weatherData:SubjectImpl){
         this.weatherData = weatherData;
-        this.currentPressure = 29.92;
+        this.currentPressure = 761;
         this.lastPressure = this.currentPressure;
     }
 
-    public update(weatherData:GetData):void{
+    public update(weatherData:GetDataImpl):void{
         this.lastPressure = this.currentPressure;
         this.currentPressure = weatherData.getPressure();
 
@@ -189,23 +196,24 @@ class ForecastDisplay  implements Observer, DisplayElement{
     }
 
     public display(): void {
-        console.log("Forecast: ");
+        console.log("Прогноз: ");
         if (this.currentPressure > this.lastPressure) {
-            console.log("Improving weather on the way!");
+            console.log("Скоро будет улучшение погоды!");
         } else if (this.currentPressure == this.lastPressure) {
-            console.log("More of the same");
+            console.log("Усиление погодных условий");
         } else if (this.currentPressure < this.lastPressure) {
-            console.log("Watch out for cooler, rainy weather");
+            console.log("Остерегайтесь прохладной, дождливой погоды");
         }
+    }
+
+    public removeObserver():void{
+        this.weatherData.removeObserver(this);
     }
 }
 
 
-
-// рандомная загрузка данных
-// json обьект изменения параметров от предыдущего оповещения, состояние?
-
 let weatherData:WeatherData = new WeatherData();
+
 let currentDisplay1:CurrentConditionsDisplay = new CurrentConditionsDisplay(weatherData);
 weatherData.registerObserver(currentDisplay1);
 
@@ -220,7 +228,7 @@ weatherData.registerObserver(forecastDisplay);
 
 
 
-
+// рандомная загрузка данных
 function sleep(ms:number) {
     return new Promise(r => setTimeout(r, ms));
 }
@@ -236,7 +244,36 @@ async function loadData() {
     await sleep(getRandomTime(4000));
     weatherData.setMeasurements(getRandomNumber(100),getRandomNumber(100),getRandomNumber(400)+400);
 }
+async function removeCurrentDisplay1() {
+    console.log('remove...');
+    await sleep(4000);
+    currentDisplay1.removeObserver();
+}
+loadData();
+loadData();
+removeCurrentDisplay1();
+/*
+ Waiting...
+ Waiting...
 
-loadData();
-loadData();
-currentDisplay1.removeObserver();
+ Текущие условия:
+ 71 "F degrees and " 68 "% humidity"
+
+ Текущие условия:
+ 39 "F degrees and " 27 "% humidity"
+
+ Статистика:
+ Avg/Max/Min temperature =  71 / 71 / 71
+
+ Прогноз:
+ Скоро будет улучшение погоды!
+
+ Текущие условия:
+ 46 "F degrees and " 8 "% humidity"
+
+ Статистика:
+ Avg/Max/Min temperature =  58.5 / 71 / 46
+
+ Прогноз:
+ Остерегайтесь прохладной, дождливой погоды
+ */

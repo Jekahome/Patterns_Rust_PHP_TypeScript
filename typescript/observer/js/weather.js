@@ -71,7 +71,8 @@ class CurrentConditionsDisplay {
         this.display();
     }
     display() {
-        console.log("Current conditions: ", this.temperature, "F degrees and ", this.humidity, "% humidity");
+        console.log("Текущие условия: ");
+        console.log(this.temperature, "F degrees and ", this.humidity, "% humidity");
     }
     removeObserver() {
         this.weatherData.removeObserver(this);
@@ -98,13 +99,17 @@ class StatisticsDisplay {
         this.display();
     }
     display() {
+        console.log("Статистика: ");
         console.log("Avg/Max/Min temperature = ", (this.sumTemperature / this.numReadings), "/", this.maxTemperature, "/", this.minTemperature);
+    }
+    removeObserver() {
+        this.weatherData.removeObserver(this);
     }
 }
 class ForecastDisplay {
     constructor(weatherData) {
         this.weatherData = weatherData;
-        this.currentPressure = 29.92;
+        this.currentPressure = 761;
         this.lastPressure = this.currentPressure;
     }
     update(weatherData) {
@@ -113,16 +118,19 @@ class ForecastDisplay {
         this.display();
     }
     display() {
-        console.log("Forecast: ");
+        console.log("Прогноз: ");
         if (this.currentPressure > this.lastPressure) {
-            console.log("Improving weather on the way!");
+            console.log("Скоро будет улучшение погоды!");
         }
         else if (this.currentPressure == this.lastPressure) {
-            console.log("More of the same");
+            console.log("Усиление погодных условий");
         }
         else if (this.currentPressure < this.lastPressure) {
-            console.log("Watch out for cooler, rainy weather");
+            console.log("Остерегайтесь прохладной, дождливой погоды");
         }
+    }
+    removeObserver() {
+        this.weatherData.removeObserver(this);
     }
 }
 let weatherData = new WeatherData();
@@ -148,6 +156,11 @@ async function loadData() {
     await sleep(getRandomTime(4000));
     weatherData.setMeasurements(getRandomNumber(100), getRandomNumber(100), getRandomNumber(400) + 400);
 }
+async function removeCurrentDisplay1() {
+    console.log('remove...');
+    await sleep(4000);
+    currentDisplay1.removeObserver();
+}
 loadData();
 loadData();
-currentDisplay1.removeObserver();
+removeCurrentDisplay1();
