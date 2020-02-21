@@ -1,10 +1,11 @@
 [package]
-name = "strategy"
+name = "observer"
 version = "0.1.0-dev"
 edition = "2018"
-description = "Pattern STRATEGY"
+description = "Pattern OBSERVER"
 authors = ["Jeka <developer@gmail.com>"]
 readme = "README.md"
 
 [dependencies]
-}
+uuid = { version = "0.8", features = ["serde", "v5"] }
+rand = "0.7"

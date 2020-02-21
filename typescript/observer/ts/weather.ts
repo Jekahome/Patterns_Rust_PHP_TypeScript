@@ -35,10 +35,10 @@ class WeatherData implements SubjectImpl,GetDataImpl{
 
     constructor(){
         this.observers = [];
-        this.changed = false;
         this.temperature = 0;
         this.humidity = 0;
         this.pressure = 0;
+        this.changed = false;
     }
     // Для оптимизации процесса оповещения
     private setChanged():void{
