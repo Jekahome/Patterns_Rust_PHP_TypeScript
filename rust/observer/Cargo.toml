@@ -9,3 +9,4 @@ readme = "README.md"
 [dependencies]
 uuid = { version = "0.8", features = ["serde", "v5"] }
 rand = "0.7"
+rand_isaac = "0.2"
