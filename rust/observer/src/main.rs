@@ -11,6 +11,8 @@ use rand::distributions::Alphanumeric;
 
 // Есть вариант с каналами, оповещение подписчиков по каналу std::sync::mpsc::channel
 // или crossbeam_channel для нескольких отправителей и приемников и гарантии жизни
+// https://gist.github.com/mattgathu/73712cb7399834d6f8162d641830cbb7
+
 
 // Есть вариант не хранить Uuid подписчика,а хранить ссылку на функцию  Vec<Box<dyn Fn(&E)>>
 // https://stackoverflow.com/questions/37572734/how-can-i-implement-the-observer-pattern-in-rust
