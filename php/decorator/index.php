@@ -9,7 +9,7 @@ class Size {
     public const VENTI = "VENTI";
 
     private string $size;
-    function __construct(string $name)
+    function __construct(string $name = "TALL")
     {
         switch ($name) {
             case "TALL":
@@ -269,7 +269,7 @@ $espresso = new Espresso(new Size("VENTI"));
 echo ($espresso->getDescription()." $".$espresso->cost()."\n");
 
 //Кофе с двойным шоколадом и взбитыми сливками
-$dark_roast = new DarkRoast(new Size("TALL"));
+$dark_roast = new DarkRoast(new Size());
 $dark_roast = new Mocha($dark_roast);
 $dark_roast = new Mocha($dark_roast);
 $dark_roast = new Milk($dark_roast);
