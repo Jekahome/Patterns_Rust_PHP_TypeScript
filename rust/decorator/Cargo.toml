@@ -1,9 +1,10 @@
 [package]
-name = "strategy"
+name = "decorator"
 version = "0.1.0-dev"
 edition = "2018"
-description = "Pattern STRATEGY"
+description = "Pattern DECORATOR"
 authors = ["Jeka <developer@gmail.com>"]
 readme = "README.md"
 
 [dependencies]
+libmath = "0.2"

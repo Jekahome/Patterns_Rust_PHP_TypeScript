@@ -48,10 +48,11 @@ abstract class Beverage {
 
 // Виды напитка
 class  HouseBlend extends Beverage{
-    private float $defaultCost = 0.89;
-    function __construct(Size $size,string $description="House Blend Coffee")
+    private float $defaultCost;
+    function __construct(Size $size,float $defaultCost=0.89,string $description="House Blend Coffee")
     {
         $this->description = $description;
+        $this->defaultCost = $defaultCost;
         $this->setSize($size);
     }
     function getDescription():string{
@@ -74,10 +75,11 @@ class  HouseBlend extends Beverage{
     }
 }
 class  DarkRoast extends Beverage{
-    private float $defaultCost = 1.0;
-    function __construct(Size $size,string $description="DarkRoast")
+    private float $defaultCost;
+    function __construct(Size $size,float $defaultCost=1.0,string $description="DarkRoast")
     {
         $this->description = $description;
+        $this->defaultCost = $defaultCost;
         $this->setSize($size);
     }
     function getDescription():string{
@@ -101,10 +103,11 @@ class  DarkRoast extends Beverage{
 }
 
 class  Espresso extends Beverage{
-    private float $defaultCost = 1.99;
-    function __construct(Size $size,string $description="Espresso")
+    private float $defaultCost;
+    function __construct(Size $size,float $defaultCost=1.99,string $description="Espresso")
     {
         $this->description = $description;
+        $this->defaultCost = $defaultCost;
         $this->setSize($size);
     }
     function getDescription():string{
@@ -127,10 +130,11 @@ class  Espresso extends Beverage{
     }
 }
 class  Decaf extends Beverage{
-    private float $defaultCost = 1.99;
-    function __construct(Size $size,string $description="Decaf")
+    private float $defaultCost;
+    function __construct(Size $size,float $defaultCost=1.99,string $description="Decaf")
     {
         $this->description = $description;
+        $this->defaultCost = $defaultCost;
         $this->setSize($size);
     }
     function getDescription():string{

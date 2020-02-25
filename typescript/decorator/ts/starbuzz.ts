@@ -26,8 +26,8 @@ abstract class Beverage {
 
 // Виды напитка
 class HouseBlend extends Beverage{
-    private defaultCost:number=0.89;
-     constructor(size:Size = Size.TALL,description: string = "House Blend Coffee") {
+    private defaultCost:number;
+     constructor(size:Size = Size.TALL,defaultCost:number=0.89,description: string = "House Blend Coffee") {
         super();
         this.description = description;
         this.setSize(size);
@@ -37,7 +37,7 @@ class HouseBlend extends Beverage{
         let cost:number =  this.defaultCost;
         switch (this.getSize()) {
             case Size.TALL:
-                cost += 0.20;
+                cost = this.defaultCost;
                 break;
             case Size.GRANDE:
                 cost += 0.35;
@@ -51,8 +51,8 @@ class HouseBlend extends Beverage{
 }
 
 class DarkRoast extends Beverage{
-    private defaultCost:number=1.0;
-    constructor(size:Size = Size.TALL,description: string = "DarkRoast") {
+    private defaultCost:number;
+    constructor(size:Size = Size.TALL,defaultCost:number=1.0,description: string = "DarkRoast") {
         super();
         this.description = description;
         this.setSize(size);
@@ -76,8 +76,8 @@ class DarkRoast extends Beverage{
 }
 
 class Espresso extends Beverage{
-    private defaultCost:number=1.99;
-    constructor(size:Size = Size.TALL,description: string = "Espresso") {
+    private defaultCost:number;
+    constructor(size:Size = Size.TALL,defaultCost:number=1.99,description: string = "Espresso") {
         super();
         this.description = description;
         this.setSize(size);
@@ -101,8 +101,8 @@ class Espresso extends Beverage{
 }
 
 class Decaf extends Beverage {
-    private defaultCost:number=1.0;
-    constructor(size:Size = Size.TALL,description: string = "Decaf") {
+    private defaultCost:number;
+    constructor(size:Size = Size.TALL,defaultCost:number=1.0,description: string = "Decaf") {
         super();
         this.description = description;
         this.setSize(size);
