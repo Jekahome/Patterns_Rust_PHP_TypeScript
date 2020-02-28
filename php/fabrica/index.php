@@ -115,3 +115,25 @@ $pizza = $chicago_factory->orderPizza(new PizzaType("CHEESE"));
 $pizza = $chicago_factory->orderPizza(new PizzaType("PEPPERONI"));
 
 
+/*
+prepare NYStyleSheesePizza
+bake NYStyleSheesePizza
+cut NYStyleSheesePizza
+box NYStyleSheesePizza
+
+prepare NYStylePepperoniPizza
+bake NYStylePepperoniPizza
+cut NYStylePepperoniPizza
+box NYStylePepperoniPizza
+
+prepare ChicagoStyleSheesePizza
+bake ChicagoStyleSheesePizza
+cut ChicagoStyleSheesePizza
+box ChicagoStyleSheesePizza
+
+prepare ChicagoStylePepperoniPizza
+bake ChicagoStylePepperoniPizza
+cut ChicagoStylePepperoniPizza
+box ChicagoStylePepperoniPizza
+
+ */
