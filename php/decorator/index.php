@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
+// Декоратор часто используется в связке с Фабрикой или Строителем
 
+// Для возможности создавать разнообразные комбинации(матрешки) добавок при поддержке общего интерфейса
 
 class Size {
     public const TALL = "TALL";
@@ -9,7 +11,7 @@ class Size {
     public const VENTI = "VENTI";
 
     private string $size;
-    function __construct(string $name = "TALL")
+    function __construct(string $name = Size::TALL)
     {
         switch ($name) {
             case "TALL":
@@ -23,10 +25,6 @@ class Size {
     }
     public function getConst():string {
         return $this->size;
-    }
-    public function compare(string $name):bool{
-        if(empty($this->size) || empty($name))return false;
-        return  $this->size === $name;
     }
 }
 
