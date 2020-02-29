@@ -18,7 +18,7 @@ class Config{
     public function setPassword($password){
         $this->password = $password;
     }
-    public function __sleep() {
+   /* public function __sleep() {
         return  array('login',  'password');
     }
 
@@ -27,6 +27,13 @@ class Config{
             $this->login =  self::$_instance->login;
             $this->password = self::$_instance->password;
         }
+    }*/
+    public function __serialize(): array {
+        return ["login" => $this->login,"password"=> $this->password];
+    }
+    public function __unserialize(array $data) {
+        $this->login = $data["login"];
+        $this->password = $data["password"];
     }
 }
 
@@ -51,5 +58,8 @@ echo $config->login," / ",$config->password,"\n";
 foo1("key2","5656");
 
 
-$unser_config= unserialize($ser_config);// восстановился из текущего состояния
-echo $unser_config->login,"==key2 / ",$unser_config->password,"==5656\n";
+$unser_config= unserialize($ser_config);// восстановился из текущего состояния при использовании __sleep __wakeup.
+//echo $unser_config->login,"==key2 / ",$unser_config->password,"==5656\n";
+
+//При использовании __serialize __unserialize данные на момент сохранения
+echo $unser_config->login,"==key1 / ",$unser_config->password,"==1234\n";
