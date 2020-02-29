@@ -1,0 +1,29 @@
+[package]
+name = "singleton"
+version = "0.1.0-dev"
+edition = "2018"
+description = "Pattern SINGLETON"
+authors = ["Jeka <developer@gmail.com>"]
+readme = "README.md"
+
+[dependencies]
+once_cell = "1.3"
+lazy_static = "1.4"
+
+
+[[bin]]
+name = "atomics"
+path = "src/atomics.rs"
+
+[[bin]]
+name = "once_cell"
+path = "src/once_cell.rs"
+
+[[bin]]
+name = "lazy_static"
+path = "src/lazy_static.rs"
+
+#Запуск:
+# cargo run --bin atomics
+# cargo run --bin once_cell
+# cargo run --bin lazy_static
