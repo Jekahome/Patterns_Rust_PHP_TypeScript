@@ -1,29 +1,37 @@
 
 
+//Инкапсуляция запроса, вызывающему invoker'у не важно какая команда будет послана так как они все реализуют один интерфейс
 
 //Придает системе гибкость, отделяя инициатора(invoker) запроса от его получателя(receiver).
 // invoker вызывающий
 // receiver получатель
-class StepReceiver{
-    position:string;
-    prev_position:string;
+interface Receiver {
+    left();
+    right();
+    undo();
+}
+
+class StepReceiver implements Receiver{
+    private position:string;
+    private prev_position:string;
 
     constructor(){}
     left(){
-        this.save_prev();
+        this.save_pos();
         this.position="left";
         console.log(this.position,"\n");
     }
     right(){
-        this.save_prev();
+        this.save_pos();
         this.position="right";
         console.log(this.position,"\n");
     }
-    private save_prev(){
-        this.prev_position=this.position;
-    }
     undo(){
         this.position=this.prev_position;
+    }
+
+    private save_pos(){
+        this.prev_position=this.position;
     }
 
 }
@@ -35,8 +43,8 @@ interface CommandI {
 
 // Команды
 class LeftOnCommand implements CommandI {
-    protected receiver:StepReceiver;
-    public  constructor( receiver:StepReceiver) {
+    protected receiver:Receiver;
+    public  constructor( receiver:Receiver) {
       this.receiver = receiver;
     }
     public  execute():boolean {
@@ -48,8 +56,8 @@ class LeftOnCommand implements CommandI {
     }
 }
 class RightOnCommand implements CommandI {
-    protected receiver:StepReceiver;
-    public  constructor( receiver:StepReceiver) {
+    protected receiver:Receiver;
+    public  constructor( receiver:Receiver) {
         this.receiver = receiver;
     }
     public  execute():boolean {
@@ -75,6 +83,7 @@ class CommandHistory {
     pop():CommandI{
         return this.history.pop();
     }
+    // для примера отображения состояния получателя
     show(){
         for (let cmd of this.history) {
             cmd.execute();
@@ -83,7 +92,7 @@ class CommandHistory {
 }
 
 
-
+// invoker вызывающий
 class Invoker {
     history: CommandHistory;
     constructor(history: CommandHistory){this.history=history;}
@@ -112,7 +121,7 @@ class Invoker {
 }
 
 
-let step:StepReceiver = new StepReceiver();
+ new StepReceiver();
 
 let invoker:Invoker = new Invoker(new CommandHistory());
 invoker.executeCommand(new RightOnCommand(new StepReceiver()));
