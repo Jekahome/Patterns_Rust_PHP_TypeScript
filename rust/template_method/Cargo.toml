@@ -1,0 +1,9 @@
+[package]
+name = "template_method"
+version = "0.1.0-dev"
+edition = "2018"
+description = "Pattern TEMPLATE METHOD"
+authors = ["Jeka <developer@gmail.com>"]
+readme = "README.md"
+
+[dependencies]
