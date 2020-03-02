@@ -1,4 +1,8 @@
 <?php
+declare(strict_types=1);
+
+//Фасад — это структурный паттерн проектирования, который предоставляет простой интерфейс к сложной системе классов,
+// библиотеке или фреймворку.
 
 interface Cook {
    function cook():bool ;
@@ -39,12 +43,13 @@ class Semolina{
     function add(Cook $ingredient){
          array_push($this->ingredients,$ingredient);
     }
+    // Прячем за фасадом все ньюансы готовки компонентов
     function cook(){
         $milk = new Milk(1);
         $milk->cook();
         $this->add($milk);
 
-        $groats = new Groats(0.1);
+        $groats = new Groats(1);
         $groats->cook();
         $this->add($groats);
         echo("Semolina is ready\n");
